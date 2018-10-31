@@ -1,0 +1,59 @@
+source leaprc.protein.ff14SB
+loadOff RES/RES.lib 
+source leaprc.water.tip4pew
+loadAmberparams RES/RES.frcmod
+
+seq = sequence { ACE RES NME} 
+#addions
+solvateOCt seq TIP4PEWBOX 15
+save
+
+
+source leaprc.protein.ff14SB
+loadOff AKR/AKR.lib 
+source leaprc.water.tip4pew
+loadAmberparams AKR/AKR.frcmod
+
+seq = sequence { ACE AKR NME  ACE AKR NME } 
+
+
+#addions
+bond seq.2.CE  seq.5.CE
+relax seq
+solvateOCt seq TIP4PEWBOX 15
+ saveAmberParm seq input.prmtop input.rst7
+quit
+
+
+
+source leaprc.protein.ff14SB
+loadOff AKS/AKS.lib 
+source leaprc.water.tip4pew
+loadAmberparams AKS/AKS.frcmod
+
+seq = sequence { ACE AKS NME  ACE AKS NME } 
+
+
+#addions
+bond seq.2.CE  seq.5.CE
+relax seq
+solvateOCt seq TIP4PEWBOX 15
+ saveAmberParm seq input.prmtop input.rst7
+quit
+
+
+source leaprc.protein.ff14SB
+loadOff CXS/CXY.lib
+loadOff CXS/CXZ.lib
+source leaprc.water.tip4pew
+loadAmberparams CXS/hybrid.frcmod
+
+seq = sequence { ACE CXY NME  ACE CXZ  NME } 
+
+
+#addions
+bond seq.2.C8 seq.5.SG
+relax seq
+solvateOCt seq TIP4PEWBOX 15
+ saveAmberParm seq input.prmtop input.rst7
+quit

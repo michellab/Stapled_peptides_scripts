@@ -1,0 +1,72 @@
+mkdir EGVVHGsATVsEKT ;
+cd EGVVHGsATVsEKT;
+mkdir Slin; 
+cd Slin;
+ nohup  SetupREMD.py --seq EGVVHGsATVsEKT --noREMD --stapled & 
+mkdir ../Shel; 
+cd ../Shel ;
+nohup  SetupREMD.py --seq EGVVHGsATVsEKT --noREMD --stapled  --helical& 
+mkdir ../Ulin; 
+cd Ulin;
+ nohup  SetupREMD.py --seq EGVVHGsATVsEKT --noREMD & 
+mkdir ../Uhel; 
+cd ../Uhel ;
+nohup  SetupREMD.py --seq EGVVHGsATVsEKT --noREMD  --helical& 
+
+
+
+
+
+
+cd ~/REMD/simulationswithoutREMD
+rm -r EGVVHGrATVsEKT ;
+mkdir EGVVHGrATVsEKT ;
+cd EGVVHGrATVsEKT;
+mkdir Slin; 
+cd Slin;
+ nohup  SetupREMD.py --seq EGVVHGrATVsEKT --noREMD --stapled   & 
+mkdir ../Shel; 
+cd ../Shel ;
+nohup  SetupREMD.py --seq EGVVHGrATVsEKT --noREMD  --helical --stapled & 
+
+mkdir ../Ulin; 
+cd ../Ulin;
+ nohup  SetupREMD.py --seq EGVVHGrATVsEKT --noREMD   & 
+mkdir ../Uhel; 
+cd ../Uhel ;
+nohup  SetupREMD.py --seq EGVVHGrATVsEKT --noREMD  --helical  & 
+
+
+
+
+cd ~/REMD/simulationswithoutREMD
+rm -r EGVVHGrATVrEKT
+mkdir EGVVHGrATVrEKT ;
+cd EGVVHGrATVrEKT;
+mkdir Slin; 
+cd Slin;
+ nohup  SetupREMD.py --seq EGVVHGrATVrEKT --noREMD  --stapled & 
+mkdir ../Shel; 
+cd ../Shel ;
+nohup  SetupREMD.py --seq EGVVHGrATVrEKT --noREMD   --helical  --stapled & 
+
+mkdir ../Ulin; 
+cd ../Ulin;
+ nohup  SetupREMD.py --seq EGVVHGrATVrEKT --noREMD   & 
+mkdir ../Uhel; 
+cd ../Uhel ;
+nohup  SetupREMD.py --seq EGVVHGrATVrEKT --noREMD   --helical& 
+
+
+cd ~/REMD/simulationswithoutREMD
+
+
+
+
+
+for file in $( ls -d EGVVHGsATV*EKT/*/ ) ; do echo $file ; cd $file ; mkdir prod ; cd prod ; gmx grompp  -quiet -f ~/REMD/simulationswithoutREMD/prodTEMP-peptide.mdp -c ../equilibration2/equilibration2-300/confout.gro -p ../simprep/topol.top -o topol.tpr -maxwarn 5 ; gmx mdrun  -gpu_id 0 -nt 2 & cd ~/REMD/simulationswithoutREMD ; done
+
+
+
+
+

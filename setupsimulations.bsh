@@ -1,0 +1,1 @@
+for folder in  EGVVHGsATVsEKT/Ulin  EGVVHGrATVrEKT/Ulin; do cd $folder ; bash ~/Scripts/solutetempering.bsh ; cd ~/REMD/simulationswithoutREMD ;done

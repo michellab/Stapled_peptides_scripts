@@ -1,0 +1,34 @@
+
+
+
+
+for i in {000..119} ; do
+gmx grompp  -f prod_$i.mdp -c conf_$i.gro -p topol.top -o topol_$i.tpr   -po  mdout_$i -maxwarn 1 ;
+
+
+
+#PBS -N pepREMD
+#PBS -l select=10
+#PBS -l walltime=00:20:00
+
+#PBS -A d96
+# Make sure any symbolic links are resolved to absolute path
+export PBS_O_WORKDIR=$(readlink -f $PBS_O_WORKDIR)
+
+# Change to the directory that the job was submitted from
+# (remember this should be on the /work filesystem)
+cd $PBS_O_WORKDIR
+
+# Set the number of threads to 1
+#   This prevents any system libraries from automatically
+#   using threading.
+export OMP_NUM_THREADS=4
+
+module add gromacs
+# Launch the parallel job
+#   Using 192 MPI processes and 24 MPI processes per node
+
+for i in {000..119} ; do
+gmx grompp  -f prod_$i.mdp -c conf_$i.gro -p topol.top -o topol_$i.tpr   -po  mdout_$i -maxwarn 1 ;
+done
+aprun  gmx mdrun -s topol_.tpr -np 120 -multi 120 -replex

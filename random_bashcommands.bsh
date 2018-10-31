@@ -1,0 +1,4 @@
+
+
+### presetup pdb for RED ### to be custumized  #### 
+for i in {1..5} ; do grep -v REMARK   PGR_$i.pdb | grep -v CONECT | grep -v TITLE | sed s/HETATM/'ATOM  '/  | sed s/'RG A'/'PGR '/|  sed s/'MODEL        1'/'MODEL        '$i/   ;  done  > all_PGR.pdb

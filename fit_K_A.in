@@ -1,0 +1,13 @@
+# Use the first  34 structures of the input trajectory
+NSTRUCTURES=34
+COORDINATE_FORMAT=TRAJECTORY
+
+# We want to fit the choosen parameter
+RUNTYPE=FIT
+PARAMETERS_TO_FIT=K_ONLY
+
+# Fit to quantum energies that are in units of Hartree
+FUNC_TO_FIT=SUM_SQUARES_AMBER_STANDARD
+QM_ENERGY_UNITS=HARTREE
+
+

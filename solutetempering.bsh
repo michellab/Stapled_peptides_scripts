@@ -1,0 +1,44 @@
+#! /bin/bash
+
+
+mkdir solutetemp
+cd solutetemp
+echo '' > plumed.dat
+cp ../simprep/topol.top .
+# six replicas
+nrep=8
+# "effective" temperature range
+tmin=290
+tmax=600
+
+# build geometric progression
+list=$(
+awk -v n=$nrep \
+    -v tmin=$tmin \
+    -v tmax=$tmax \
+  'BEGIN{for(i=0;i<n;i++){
+    t=tmin*exp(i*log(tmax/tmin)/(n-1));
+    printf(t); if(i<n-1)printf(",");
+  }
+}'
+)
+
+# clean directory
+rm -fr \#*
+
+
+for((i=0;i<nrep;i++))
+do
+
+# choose lambda as T[0]/T[i]
+# remember that high temperature is equivalent to low lambda
+  lambda=$(echo $list | awk 'BEGIN{FS=",";}{print $1/$'$((i+1))';}')
+# process topology
+# (if you are curious, try "diff topol0.top topol1.top" to see the changes)
+  plumed partial_tempering $lambda < topol.top > topol$i.top
+# prepare tpr file
+# -maxwarn is often needed because box could be charged
+  gmx grompp -p  topol$i.top -o topol$i.tpr -c ../equilibration2/equilibration2-300/confout.gro -f  /home/marie/Stapled_peptide_git/GROMACS_SIM/prod-300K-peptide.mdp -maxwarn 1
+done
+
+mpirun -n 6 /home/marie/Utilities/gromacs2016.4-plumed2.3.2-openmpi-gpu/bin/mdrun_mpi  -s topol.tpr -multi 6  -plumed plumed.dat -hrex -replex 50000

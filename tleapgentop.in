@@ -1,0 +1,4 @@
+mol = loadmol2 hybrid.mol2 
+source leaprc.protein.ff14SB
+loadAmberParams libraiambcross.frcmod
+saveAmberParmNetcdf mol mol.prmtop mot.netcdf
